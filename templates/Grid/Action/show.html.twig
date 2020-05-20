@@ -1,0 +1,8 @@
+{% import 'MakeUiBundle:Macro:grid_buttons.html.twig' as buttons %}
+
+{% set parameters = {'id': data.id} %}
+{% set parameters = options.parameters is defined ? parameters|merge(options.parameters) : parameters %}
+
+{% if sylius_is_granted(grid.metadata.applicationName~'.'~grid.metadata.name~'.show') %}
+    {{ buttons.show(path(grid.requestConfiguration.getRouteName('show'), parameters)) }}
+{% endif %}

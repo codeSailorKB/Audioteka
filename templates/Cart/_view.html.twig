@@ -1,0 +1,40 @@
+<div class="panel-body">
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Created at</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td>{{ resource.createDate|date('Y-m-d H:i') }}</td>
+            <td>{{ resource.value|number_format(2,'.',' ') }}</td>
+        </tr>
+    </table>
+
+
+    <h4>Products</h4>
+
+
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for product in resource.product %}
+            <tr>
+                <td>{{ product.title }}</td>
+                <td class="text-right">{{ product.price|number_format(2,'.',' ') }}</td>
+            </tr>
+        {% endfor %}
+        <tr class="text-right">
+            <td>Total</td>
+            <td>{{ resource.value|number_format(2,'.',' ') }}</td>
+        </tr>
+    </table>
+</div>

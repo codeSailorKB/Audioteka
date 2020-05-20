@@ -1,0 +1,71 @@
+sylius_grid:
+    templates:
+          action:
+              create: Crud/create.html.twig
+              save: Crud/save.html.twig
+              update: Crud/update.html.twig
+              show: Crud/show.html.twig
+              delete: Crud/delete.html.twig
+    grids:
+        app_product:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: App\Entity\Product
+            sorting:
+                 title: asc
+            fields:
+                title:
+                    type: twig
+                    label: title
+                    path: .
+                    options:
+                        template: Product/fields/title.html.twig
+                price:
+                    type: twig
+                    label: price
+                    path: .
+                    options:
+                        template: Product/fields/price.html.twig
+            limits: [3]
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    update:
+                        type: update
+                    delete:
+                        type: delete
+        app_cart:
+            driver:
+                name: doctrine/orm
+                options:
+                    class: App\Entity\Cart
+            fields:
+                createDate:
+                    type: datetime
+                    label: Created at
+                products:
+                    type: twig
+                    label: Products
+                    path: .
+                    options:
+                        template: Cart/fields/products_list.html.twig
+                value:
+                    type: twig
+                    label: Total
+                    path: .
+                    options:
+                        template: Cart/fields/value.html.twig
+            actions:
+                main:
+                    create:
+                        type: create
+                item:
+                    update:
+                        type: update
+                    show:
+                        type: show
+                    delete:
+                        type: delete

@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% import 'Crud/Macro/action_buttons.html.twig' as action_buttons %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    {% if configuration.vars.templates.stylesheets is defined %}
+        {% include configuration.vars.templates.stylesheets %}
+    {% endif %}
+{% endblock stylesheets %}
+
+{% set parameters = {} %}
+{% if configuration.request is defined %}
+    {% set parameters = configuration.request.get('type') ? parameters|merge({'type': configuration.request.get('type')}) : parameters %}
+{% endif %}
+
+
+{% block actionButtons %}
+    <li>
+        {{ action_buttons.back(path(configuration.getRouteName('index'), parameters)) }}
+    </li>
+    <li>
+        {{ action_buttons.edit(path(configuration.getRouteName('update'), parameters|merge({'id': resource.id}))) }}
+    </li>
+    {% if configuration.vars.allow_delete is defined and configuration.vars.allow_delete %}
+        <li>
+            {{ action_buttons.delete(path(configuration.getRouteName('delete'), {'id': resource.id}), resource.id) }}
+        </li>
+    {% endif %}
+    {% if configuration.vars.templates.additional_buttons is defined %}
+        {% include configuration.vars.templates.additional_buttons %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {% include configuration.vars.templates.view %}
+    {% if configuration.vars.templates.additional_view is defined %}
+        {% include configuration.vars.templates.additional_view %}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if configuration.vars.templates.javascripts is defined %}
+        {% include configuration.vars.templates.javascripts %}
+    {% endif %}
+{% endblock javascripts %}

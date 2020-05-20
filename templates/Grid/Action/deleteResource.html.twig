@@ -1,0 +1,16 @@
+{% import 'MakeUiBundle:Macro:action_buttons.html.twig' as buttons %}
+{% if sylius_is_granted(grid.metadata.applicationName~'.'~grid.metadata.name~'.delete') %}
+    {% set parameters = {'id': data.id} %}
+
+    {% if options.parameters is defined and options.parameters|length > 0 %}
+        {% set parameters = parameters|merge(options.parameters) %}
+    {% endif %}
+
+    {% if grid.metadata.name == 'billtoprinter' %}
+        {% if not data.billPrinted %}
+            {{ buttons.deleteResource(path(grid.requestConfiguration.getRouteName('delete'), parameters), data.id, 'button') }}
+        {% endif %}
+    {% else %}
+        {{ buttons.deleteResource(path(grid.requestConfiguration.getRouteName('delete'), parameters), data.id, 'button') }}
+    {% endif %}
+{% endif %}

@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% import 'Crud/Macro/action_buttons.html.twig' as action_buttons %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% if configuration.vars.templates.stylesheets is defined %}
+        {% include configuration.vars.templates.stylesheets %}
+    {% endif %}
+{% endblock stylesheets %}
+
+{% set parameters = {} %}
+{% if configuration.request is defined %}
+    {% set parameters = configuration.request.get('type') ? parameters|merge({'type': configuration.request.get('type')}) : parameters %}
+{% endif %}
+
+{% block actionButtons %}
+    {% if configuration.vars.backPath is defined %}
+        {% set backPath = configuration.vars.backPath %}
+    {% else %}
+        {% set backPath = configuration.getRouteName('index') %}
+    {% endif %}
+    {% if configuration.vars.backParameters is defined %}
+        {% set backParameters = configuration.vars.backParameters %}
+    {% else %}
+        {% set backParameters = [] %}
+    {% endif %}
+    {% set backParameters = backParameters|merge(parameters) %}
+    <li>
+        {{ action_buttons.back(path(backPath, backParameters)) }}
+    </li>
+    {% if not (configuration.vars.noShow is defined) %}
+        <li>
+            {{ action_buttons.show(path(configuration.getRouteName('show'), parameters|merge({'id': resource.id}))) }}
+        </li>
+    {% endif %}
+    {% if configuration.vars.templates.additional_buttons is defined %}
+        {% include configuration.vars.templates.additional_buttons %}
+    {% endif %}
+{% endblock %}
+
+{% block flashes %}
+    {{ parent() }}
+
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form, {'action': path(configuration.getRouteName('update'), configuration.vars.route.parameters|default(parameters|merge({ 'id': resource.id }))), 'attr': {'class': 'form-horizontal', 'data-parsley-validate': 'data-parsley-validate', 'novalidate': 'novalidate', 'id': configuration.metadata.name}}) }}
+
+        <input type="hidden" name="_method" value="PUT" />
+        {% if configuration.vars.templates.form is defined %}
+            {% include configuration.vars.templates.form %}
+        {% else %}
+            {{ form_widget(form) }}
+        {% endif %}
+    {{ form._token is defined ? form_row(form._token) : '' }}
+    {{ form_end(form, {'render_rest': false}) }}
+    {% if configuration.vars.templates.additional_view is defined %}
+        {% include configuration.vars.templates.additional_view %}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if configuration.vars.templates.javascripts is defined %}
+        {% include configuration.vars.templates.javascripts %}
+    {% endif %}
+
+    {% if configuration.vars.templates.js is defined %}
+        {% include configuration.vars.templates.js %}
+    {% endif %}
+{% endblock javascripts %}

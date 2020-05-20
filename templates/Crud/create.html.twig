@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% import 'Crud/Macro/action_buttons.html.twig' as action_buttons %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% if configuration.vars.templates.stylesheets is defined %}
+        {% include configuration.vars.templates.stylesheets %}
+    {% endif %}
+{% endblock stylesheets %}
+
+
+{% set parameters = {} %}
+{% if configuration.request is defined %}
+    {% set parameters = configuration.request.get('type') ? parameters|merge({'type': configuration.request.get('type')}) : parameters %}
+{% endif %}
+
+{% block actionButtons %}
+    <li>
+        {{ action_buttons.back(path(configuration.getRouteName('index'), parameters)) }}
+    </li>
+    {% if configuration.vars.templates.additional_buttons is defined %}
+        {% include configuration.vars.templates.additional_buttons %}
+    {% endif %}
+{% endblock %}
+
+{% block flashes %}
+    {{ parent() }}
+
+    {{ form_errors(form) }}
+{% endblock %}
+
+{% block content %}
+    {{ form_start(form, {'action': path(configuration.getRouteName('create'), configuration.vars.route.parameters|default(parameters|merge({ 'id': resource.id }))), 'attr': {'class': 'form-horizontal', 'data-parsley-validate': 'data-parsley-validate', 'novalidate': 'novalidate', 'id': configuration.metadata.name}}) }}
+        {% if configuration.vars.templates.form is defined %}
+            {% include configuration.vars.templates.form %}
+        {% else %}
+            {{ form_widget(form) }}
+        {% endif %}
+    {{ form._token is defined ? form_row(form._token) : '' }}
+    {{ form_end(form, {'render_rest': false}) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if configuration.vars.templates.javascripts is defined %}
+        {% include configuration.vars.templates.javascripts %}
+    {% endif %}
+
+    {% if configuration.vars.templates.js is defined %}
+        {% include configuration.vars.templates.js %}
+    {% endif %}
+{% endblock javascripts %}

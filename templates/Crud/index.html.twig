@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% set definition = resources.definition %}
+{% set data = resources.data %}
+
+{% block stylesheets %}
+    {{ parent() }}
+
+    {% if configuration.vars.templates.stylesheets is defined %}
+        {% include configuration.vars.templates.stylesheets %}
+    {% endif %}
+{% endblock stylesheets %}
+
+{% block actionButtons %}
+    {% if definition.actionGroups.main is defined and definition.getEnabledActions('main')|length > 0 %}
+        {% for action in definition.getEnabledActions('main') %}
+            <li>
+                <a class="btn btn-success" href="{{ path(configuration.getRouteName(action.type)) }}">{{ action.name }}</a>
+            </li>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ sylius_grid_render(resources, 'Crud/_grid.html.twig') }}
+
+    {% if configuration.vars.templates.modals is defined %}
+        {% if configuration.vars.templates.modals is iterable %}
+            {% for modal in configuration.vars.templates.modals %}
+                {% include modal %}
+            {% endfor %}
+        {% else %}
+            {% include configuration.vars.templates.modals %}
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    {% if configuration.vars.templates.javascripts is defined %}
+        {% include configuration.vars.templates.javascripts %}
+    {% endif %}
+
+    {% if configuration.vars.templates.additional_js is defined %}
+        {% include configuration.vars.templates.additional_js %}
+    {% endif %}
+{% endblock javascripts %}

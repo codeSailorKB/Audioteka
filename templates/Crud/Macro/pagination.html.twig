@@ -1,0 +1,16 @@
+{% macro link(paginator, number) %}
+    <li{% if number == paginator.currentPage %} class="active"{% endif %}>
+        <a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge(app.request.query.all)|merge({'page': number})) }}">{{ number }}</a>
+    </li>
+{% endmacro %}
+
+{% macro render(paginator)  %}
+    {% import _self as pagination %}
+
+    {% if paginator.haveToPaginate() %}
+        <div class="pagination-menu text-center visible-md visible-lg">
+                {{ pagerfanta(paginator, 'twitter_bootstrap4', {'proximity': 2, 'prev_message': '<<', 'next_message': '>>'}) }}
+            </div>
+        </div>
+    {% endif %}
+{% endmacro %}

@@ -1,0 +1,36 @@
+{% import 'Crud/Macro/pagination.html.twig' as pagination %}
+{% import 'Crud/Macro/table.html.twig' as table %}
+
+{% set definition = grid.definition %}
+{% set data = grid.data %}
+
+{% if app.request.attributes.get('_route') %}
+    {% set path = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+{% endif %}
+
+
+<div class="">
+    <table class="table table-striped table-hover">
+        <thead>
+            <tr>
+                <th>Lp</th>
+                {{ table.headers(grid, definition, app.request.attributes) }}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    <td>{{ loop.index + (data.currentPage - 1) * data.maxPerPage }}</td>
+                    {{ table.row(grid, definition, row) }}
+                </tr>
+            {% else %}
+                <tr>
+                    <td class="text-center" colspan="{{ definition.fields|length + definition.actionGroups.item is defined + 1 }}">
+                       No results to display
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {{ pagination.render(data) }}
+</div>

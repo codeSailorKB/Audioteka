@@ -1,0 +1,12 @@
+{% macro headers(grid, definition, requestAttributes) %}
+
+    {% for field in definition.enabledFields %}
+        <th class="sylius-table-column-{{ field.name }}">{{ field.label|trans }}</th>
+    {% endfor %}
+{% endmacro %}
+
+{% macro row(grid, definition, row) %}
+    {% for field in definition.enabledFields %}
+        <td>{{ sylius_grid_render_field(grid, field, row) }}</td>
+    {% endfor %}
+{% endmacro %}

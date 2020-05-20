@@ -1,0 +1,16 @@
+sylius_resource:
+    resources:
+        app.product:
+            driver: doctrine/orm
+            classes:
+                model: App\Entity\Product
+                controller: Sylius\Bundle\ResourceBundle\Controller\ResourceController
+                repository: Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository
+                form: App\Form\ProductType
+        app.cart:
+            driver: doctrine/orm
+            classes:
+                model: App\Entity\Cart
+                controller: App\Controller\CartController
+                repository: Sylius\Bundle\ResourceBundle\Doctrine\ORM\EntityRepository
+                form: App\Form\CartType

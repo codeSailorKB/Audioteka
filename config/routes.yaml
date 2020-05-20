@@ -1,0 +1,33 @@
+app_product:
+    resource: |
+        alias: app.product
+        templates: Crud
+        grid: app_product
+        vars:
+           show:
+                templates:
+                    view: Product/_view.html.twig
+    type: sylius.resource
+
+
+app_cart:
+    resource: |
+        alias: app.cart
+        templates: Crud
+        grid: app_cart
+        vars:
+            create:
+                templates:
+                    form: Cart/form.html.twig
+            update:
+                templates:
+                    form: Cart/form.html.twig
+            show:
+                templates:
+                    view: Cart/_view.html.twig
+    type: sylius.resource
+
+
+api:
+    resource: "routes/api_routes.yaml"
+    prefix:   /

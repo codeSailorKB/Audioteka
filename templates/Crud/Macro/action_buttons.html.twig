@@ -1,0 +1,113 @@
+{% macro default(url, message, id, icon, class, extra) %}
+    <a class="{% if class is not empty %} {{ class }} {% else %}btn btn-primary{% endif %}" {% if id is not empty %} id="{{ id }}"{% endif %} href="{{ url }}"{% for extraKey, extraValue in extra %} {{ extraKey }}="{{ extraValue }}"{% endfor %}>
+        {% if icon is not empty %}
+            <i class="fa-fw {{ icon }}"></i>
+        {% endif %}
+        &nbsp;{{ message|trans }}
+    </a>
+{% endmacro %}
+
+{% macro show(url, message, id, class) %}
+    {% import _self as buttons %}
+
+    {% if message is empty %}
+        {% set message = 'show' %}
+    {% endif %}
+
+    {{ buttons.default(url, message, id, 'fa-fw fa-eye') }}
+{% endmacro %}
+
+{% macro save(message, formId) %}
+    {% import _self as buttons %}
+
+    {% if message is empty %}
+        {% set message = 'save' %}
+    {% endif %}
+
+    {{ buttons.default('#', message, '', 'fa-fw fa-save', 'btn btn-success special js-formsubmit', {'data-formid': formId}) }}
+{% endmacro %}
+
+{% macro back(url, message, id, class) %}
+    {% import _self as buttons %}
+
+    {% if message is empty %}
+        {% set message = 'back to the list' %}
+    {% endif %}
+
+    {{ buttons.default(url, message, id, 'fa-fw fa-chevron-left') }}
+{% endmacro %}
+
+{% macro create(url, message, id) %}
+    {% import _self as buttons %}
+
+    {% if message is empty %}
+        {% set message = 'create' %}
+    {% endif %}
+
+    {{ buttons.default(url, message, id, 'fa-fw fa-plus', 'primary') }}
+{% endmacro %}
+
+{% macro edit(url, message, id) %}
+    {% import _self as buttons %}
+
+    {% if message is empty %}
+        {% set message = 'edit' %}
+    {% endif %}
+
+    {{ buttons.default(url, message, id, 'fa-fw fa-edit') }}
+{% endmacro %}
+
+
+{% macro delete(url, resourceId = null) %}
+    <a data-formid="deleteForm"  data-confirm="true" title="{{ 'make.ui.delete'|trans }}" class="js-formsubmit">
+        <i class="fa-fw fa-trash-o"></i> {{ 'make.ui.delete'|trans }}
+    </a>
+    <form id="deleteForm" action="{{ url }}" method="post" class="hide">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token(resourceId) }}" />
+    </form>
+{% endmacro %}
+
+{% macro deleteSimple(url, resourceId = null) %}
+    <a data-formid="deleteForm"  data-confirm=true title="{{ 'make.ui.delete'|trans }}" class="js-formsubmit btn btn-bordered" data-toggle="tooltip">
+        <i class="fa-fw fa-trash-o"></i>
+    </a>
+    <form id="deleteForm" action="{{ url }}" method="post" class="hide">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token(resourceId) }}" />
+    </form>
+{% endmacro %}
+
+{% macro deleteResource(url, resourceId = null, display = 'link') %}
+    {% if display == 'link' %}
+        <li>
+            <a href="#" title="{{ 'make.ui.delete'|trans }}" class="[ delete-resource ]" data-requires-confirmation data-message="{{ 'views.recordactions.confirm'|trans }}">
+                <i class="fa-fw fa-trash-o"></i> {{ 'make.ui.delete'|trans }}
+            </a>
+            <form id="deleteForm_{{ resourceId }}" action="{{ url }}" method="post" class="hide">
+                <input type="hidden" name="_method" value="DELETE">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token(resourceId) }}" />
+            </form>
+        </li>
+    {% elseif display == 'button' %}
+        <a href="#" title="{{ 'make.ui.delete'|trans }}" data-toggle="tooltip" class="btn btn-danger [ delete-resource ]" data-requires-confirmation data-message="{{ 'views.recordactions.confirm'|trans }}">
+            <i class="fa-fw fa-trash-o"></i>
+        </a>
+        <form id="deleteForm_{{ resourceId }}" action="{{ url }}" method="post" class="hide">
+            <input type="hidden" name="_method" value="DELETE">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token(resourceId) }}" />
+        </form>
+    {% endif %}
+
+
+{% endmacro %}
+
+{% macro post(url, formId, icon, message, resourceId = null) %}
+    <a data-formid="{{ formId }}" class="js-formsubmit">
+        <i class="{{ icon }}"></i> {{ message }}
+    </a>
+
+    <form id="{{ formId }}" action="{{ url }}" method="post" class="hide">
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token(resourceId) }}" />
+    </form>
+{% endmacro %}

@@ -1,0 +1,5 @@
+<ul>
+    {% for product in data.product %}
+        <li>{{ product.title }} {{ product.price|number_format(2,'.',' ') }}</li>
+    {% endfor %}
+</ul>

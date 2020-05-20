@@ -1,0 +1,97 @@
+
+app_api_product_index:
+  path: /api/products
+  format:   json
+  methods: [GET]
+  defaults:
+    _controller: app.controller.product:indexAction
+    _sylius:
+      paginate: 3
+
+app_api_product_show:
+  path: /api/products/{id}/show
+  format:   json
+  methods: [GET]
+  defaults:
+    _controller: app.controller.product:showAction
+    _sylius:
+      paginate: false
+
+app_api_product_create:
+  path: /api/products/create
+  format:   json
+  methods: [PUT, POST]
+  defaults:
+    _controller: app.controller.product:createAction
+    _sylius:
+      return_content: true
+
+app_api_product_update:
+  path: /api/products/{id}/update
+  methods: [PUT, POST]
+  format:   json
+  defaults:
+    _controller: app.controller.product:updateAction
+
+app_api_product_delete:
+  path: /api/products/{id}/delete
+  format:   json
+  methods: [DELETE, GET]
+  defaults:
+    _controller: app.controller.product:deleteAction
+    _sylius:
+      paginate: false
+
+app_api_carts:
+  path: /api/carts
+  format:   json
+  methods: [GET]
+  defaults:
+    _controller: app.controller.cart:indexAction
+    _sylius:
+      paginate: 3
+
+app_api_cart_show:
+  path: /api/carts/{id}/show
+  format:   json
+  methods: [GET]
+  defaults:
+    _controller: app.controller.cart:indexAction
+    _sylius:
+      paginate: false
+
+app_api_cart_create:
+  path: /api/carts/{id}/create
+  format:   json
+  methods: [POST, PUT]
+  defaults:
+    _controller: app.controller.cart:createAction
+    _sylius:
+      return_content: true
+
+app_api_cart_update:
+  path: /api/carts/{id}/update
+  format:   json
+  methods: [POST, PUT]
+  defaults:
+    _controller: app.controller.cart:updateAction
+    _sylius:
+      return_content: true
+
+app_api_cart_add_position:
+  path: /api/carts/{id}/add_position/{positionId}
+  format:   json
+  methods: [GET]
+  defaults:
+    _controller: app.controller.cart:addPositionFromApiAction
+    _sylius:
+      paginate: false
+
+app_api_cart_remove_position:
+  path: /api/carts/{id}/remove_position/{positionId}
+  format:   json
+  methods: [GET]
+  defaults:
+    _controller: app.controller.cart:removePositionFromApiAction
+    _sylius:
+      paginate: false
